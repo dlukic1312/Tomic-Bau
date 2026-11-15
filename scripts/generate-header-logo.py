@@ -50,17 +50,23 @@ width, height = excavator.size
 canvas = Image.new("RGBA", (width, height + 56))
 canvas.alpha_composite(excavator, (0, 0))
 draw = ImageDraw.Draw(canvas)
-left, right = 415, 776  # Track length +8%; same right edge and height
+# Baseline belongs to the excavator group; placed underneath, without modifying artwork.
+# Straight gold bar extending below the bucket, pipes and crawler.
+line_y = height + 47
+draw.rounded_rectangle((7, line_y - 5, width - 7, line_y + 3),
+                       radius=4, fill=(197, 128, 10, 255))
+draw.line((13, line_y - 3, width - 13, line_y - 3),
+          fill=(255, 221, 77, 255), width=3)
+
+# Schematic continuous track, with no road wheels or mechanical roller details.
+# Only the track is modified; everything above remains the source pixels.
+left, right = 415, 776
 top, bottom = height - 2, height + 38
-draw.rounded_rectangle((left - 4, top - 4, right + 4, bottom + 4),
-                       radius=20, fill=(12, 12, 11, 250))
+draw.rounded_rectangle((left - 3, top - 3, right + 3, bottom + 3),
+                       radius=20, fill=(17, 16, 13, 255))
 draw.rounded_rectangle((left, top, right, bottom), radius=18,
-                       fill=(234, 168, 26), outline=(255, 231, 113), width=3)
+                       fill=(229, 164, 22, 255), outline=(255, 226, 99, 255), width=3)
 draw.rounded_rectangle((left + 9, top + 9, right - 9, bottom - 9),
-                       radius=13, fill=(28, 29, 25), outline=(171, 98, 4), width=2)
-for x in range(left + 26, right - 10, 36):
-    draw.ellipse((x - 9, top + 12, x + 9, top + 30),
-                 fill=(208, 138, 13), outline=(255, 220, 78), width=2)
-    draw.ellipse((x - 4, top + 17, x + 4, top + 25), fill=(39, 36, 25))
+                       radius=12, fill=(29, 29, 25, 255), outline=(176, 112, 13, 255), width=2)
 canvas.save(ROOT / "assets" / "header-bagger.webp", format="WEBP", lossless=True, method=6)
-print("Generated unchanged original lettering and excavator; only crawler base length adjusted.")
+print("Generated original lettering and excavator with schematic crawler and restored gold baseline.")
