@@ -4,7 +4,7 @@ from collections import deque
 from pathlib import Path
 from PIL import Image
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 source = Image.open(ROOT / "assets" / "original-logo.webp").convert("RGB")
 
 def cut_original(box, name):
