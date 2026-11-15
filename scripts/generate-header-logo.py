@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[1]
 source = Image.open(ROOT / "assets" / "original-logo.webp").convert("RGB")
 
-def extract(box):
+def extract(box, remove_all_white=False):
     photo = source.crop(box)
     width, height = photo.size
     pixels = photo.load()
@@ -35,7 +35,7 @@ def extract(box):
         if y > 0: queue.append((x, y - 1))
         if y < height - 1: queue.append((x, y + 1))
     alpha = Image.new("L", (width, height))
-    alpha.putdata([0 if value else 255 for value in seen])
+    alpha.putdata([0 if seen[i] or (remove_all_white and background(i % width, i // width)) else 255 for i in range(width * height)])
     result = photo.convert("RGBA")
     result.putalpha(alpha)
     return result
@@ -45,7 +45,7 @@ word = extract((65, 440, 875, 718))  # Clean white margin above glyphs; excludes
 word.save(ROOT / "assets" / "header-schrift.webp", format="WEBP", lossless=True, method=6)
 
 # Preserve the original excavator and pipes. The crawler base belongs below the machine.
-excavator = extract((74, 33, 860, 415))
+excavator = extract((74, 33, 860, 415), remove_all_white=True)  # All disconnected white background pockets transparent; preserve gold/black pixels
 width, height = excavator.size
 canvas = Image.new("RGBA", (width, height + 56))
 canvas.alpha_composite(excavator, (0, 0))
