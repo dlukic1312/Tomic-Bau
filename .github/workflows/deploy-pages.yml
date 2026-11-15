@@ -1,0 +1,42 @@
+name: Deploy TOMIC BAU preview to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify website assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in einfahrt kabeltrasse bagger asphaltstreifen hof wege kabelgraben gehweg mast bordsteine bord kabelmaterial original-logo graben; do
+            test -s "assets/${file}.webp" || { echo "::error::Missing assets/${file}.webp"; exit 1; }
+          done
+          test -s index.html
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
