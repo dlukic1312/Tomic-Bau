@@ -10,7 +10,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = ["index.html", "impressum.html", "datenschutz.html"]
+PAGES = ["index.html", "asphaltbau.html", "kabelbau.html", "impressum.html", "datenschutz.html"]
 errors = []
 
 class PageParser(HTMLParser):
