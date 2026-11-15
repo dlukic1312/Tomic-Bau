@@ -38,6 +38,19 @@ jobs:
           base64 --decode assets/approved-header.png.base64 > assets/approved-header.png
           test -s assets/approved-header.png
           file assets/approved-header.png
+      - name: Validate static pages, links and images
+        run: python3 scripts/check_site.py
+      - name: Validate inline JavaScript syntax
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          blocks = re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>', html, flags=re.S | re.I)
+          Path('/tmp/tomic-inline.js').write_text('\\n'.join(blocks), encoding='utf-8')
+          PY
+          node --check /tmp/tomic-inline.js
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site
