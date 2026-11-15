@@ -34,7 +34,7 @@ const menu=document.querySelector('.menu'),nav=document.querySelector('#navlinks
   const body = ['Guten Tag,', '', 'ich möchte eine Anfrage stellen.', '', 'Auftraggeber: ' + type,
     'Leistung: ' + work, 'Ort: ' + (place || 'Noch offen'),
     'Projektbeschreibung: ' + (details || 'Noch offen'), '',
-    'Bitte melden Sie sich bei mir.', '', 'Mit freundlichen Grüßen'].join('\\n');
+    'Bitte melden Sie sich bei mir.', '', 'Mit freundlichen Grüßen'].join('\n');
   document.querySelector('#result').textContent = 'Ihr E-Mail-Programm wird geöffnet. Bitte prüfen und versenden Sie die Nachricht dort.';
   window.location.href = 'mailto:info@tomic-bau.de?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 });
