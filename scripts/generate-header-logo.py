@@ -41,7 +41,7 @@ def extract(box):
     return result
 
 # Exclude the old curved golden track above the lettering: typography unchanged.
-word = extract((65, 448, 875, 718))
+word = extract((65, 440, 875, 718))  # Clean white margin above glyphs; excludes old gold arc
 word.save(ROOT / "assets" / "header-schrift.webp", format="WEBP", lossless=True, method=6)
 
 # Preserve the original excavator and pipes. The crawler base belongs below the machine.
