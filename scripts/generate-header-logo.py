@@ -50,7 +50,7 @@ width, height = excavator.size
 canvas = Image.new("RGBA", (width, height + 56))
 canvas.alpha_composite(excavator, (0, 0))
 draw = ImageDraw.Draw(canvas)
-left, right = 442, 776
+left, right = 415, 776  # Track length +8%; same right edge and height
 top, bottom = height - 2, height + 38
 draw.rounded_rectangle((left - 4, top - 4, right + 4, bottom + 4),
                        radius=20, fill=(12, 12, 11, 250))
@@ -63,4 +63,4 @@ for x in range(left + 26, right - 10, 36):
                  fill=(208, 138, 13), outline=(255, 220, 78), width=2)
     draw.ellipse((x - 4, top + 17, x + 4, top + 25), fill=(39, 36, 25))
 canvas.save(ROOT / "assets" / "header-bagger.webp", format="WEBP", lossless=True, method=6)
-print("Generated original-font lettering and excavator with a closed crawler track.")
+print("Generated unchanged original lettering and excavator; only crawler base length adjusted.")
