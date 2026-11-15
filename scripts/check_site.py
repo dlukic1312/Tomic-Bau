@@ -90,7 +90,7 @@ for filename in PAGES:
     if filename == "index.html":
         if '<meta name="robots" content="noindex,nofollow"' not in src:
             errors.append("Preview index must remain noindex until official domain launch")
-        for text in ("ASPHALTBAU.", "KABELBAU.", "Langjährige Erfahrung", "Pflaster-, Wege- &amp; Stützwandbau", "impressum.html", "datenschutz.html", "tel:+4915730993989"):
+        for text in ("Asphalt- und Kabelbau<br/>aus Kirchzarten", "Kabelbau &amp; Glasfaser", "Langjährige Erfahrung", "Pflaster-, Wege- &amp; Stützwandbau", "impressum.html", "datenschutz.html", "tel:+4915730993989"):
             if text not in src:
                 errors.append(f"index.html: required content missing: {text}")
     print(f"Checked {filename}: {len(parser.links)} links, {len(parser.images)} images, {len(parser.ids)} IDs")
