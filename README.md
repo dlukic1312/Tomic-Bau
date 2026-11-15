@@ -13,6 +13,6 @@ Die 14 benötigten WebP-Dateien liegen vollständig im Ordner `assets/`.
 
 ## Vorschau mit GitHub Pages
 Unter `Settings > Pages` die Quelle `GitHub Actions` verwenden. Der Workflow `.github/workflows/deploy-pages.yml` veröffentlicht die Website automatisch nach einem Push auf `main`.
-Die Vorschau wird dann unter https://dlukic1312.github.io/Tomic-Bau/ abrufbar.
+Die Vorschau wird dann unter https://dlukic1312.github.io/tomic-bau/ abrufbar.
 
 Achtung: GitHub Pages ist öffentlich. Fotos mit erkennbaren Personen, Kennzeichen oder fremden Logos vor Freigabe prüfen.
