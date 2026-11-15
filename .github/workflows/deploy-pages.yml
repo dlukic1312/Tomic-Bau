@@ -51,6 +51,14 @@ jobs:
           Path('/tmp/tomic-inline.js').write_text('\\n'.join(blocks), encoding='utf-8')
           PY
           node --check /tmp/tomic-inline.js
+      - name: Check mobile and desktop layout in Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix /tmp/tomic-playwright --no-audit --no-fund playwright
+          /tmp/tomic-playwright/node_modules/.bin/playwright install chromium --with-deps
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/tomic-http.log 2>&1 &
+          NODE_PATH=/tmp/tomic-playwright/node_modules node scripts/check_browser.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site
