@@ -111,16 +111,27 @@ inquiry.addEventListener('submit', async e => {
     let data={};
     try { data=await response.json(); } catch (_) { /* JSON errors are handled below */ }
     if (!response.ok || (data.success !== true && data.success !== 'true')) {
-      const providerMessage=typeof data.message==='string' ? data.message : '';
-      if (/activation|activate form|confirm/i.test(providerMessage)) throw new Error('activation');
-      throw new Error('provider');
+      const providerMessage=typeof data.message==='string' ? data.message.trim().slice(0,350) : '';
+      if (/activat|confirm.*form|confirm.*email/i.test(providerMessage)) {
+        throw new Error('activation');
+      }
+      const detail=providerMessage || ('HTTP ' + response.status + ' – keine erfolgreiche Bestätigung vom Formulardienst');
+      throw new Error('service: ' + detail);
     }
     inquiryResult.style.color='#226345';
     inquiryResult.textContent='Die Anfrage wurde vom Formulardienst angenommen. Bitte beachten Sie, dass die Zustellung erst mit Eingang der E-Mail bestätigt ist.';
     inquiry.reset();
   } catch (err) {
     inquiryResult.style.color='#a43324';
-    inquiryResult.textContent=err && err.message==='activation' ? 'Das Kontaktformular muss vom Betreiber zuerst über eine Bestätigungs-E-Mail von FormSubmit an info@tomic-bau.de aktiviert werden. Bitte kontaktieren Sie uns bis dahin direkt per E-Mail oder Telefon.' : 'Die Anfrage konnte nicht zuverlässig übermittelt werden. Bitte kontaktieren Sie uns direkt über info@tomic-bau.de oder telefonisch. Senden Sie das Formular nicht mehrfach, wenn Sie unsicher sind.';
+    if (err && err.message==='activation') {
+      inquiryResult.textContent='FormSubmit meldet: Das Formular ist noch nicht aktiviert. Bitte im Postfach info@tomic-bau.de (auch Spam) die E-Mail „Activate Form“ bestätigen. Bis dahin direkt per E-Mail oder Telefon kontaktieren.';
+    } else if (err && err.message.startsWith('service: ')) {
+      inquiryResult.textContent='Der Formulardienst meldet: ' + err.message.slice(9) + '. Die Anfrage wurde nicht bestätigt. Bitte E-Mail oder Telefon nutzen.';
+    } else if (err && err.name==='AbortError') {
+      inquiryResult.textContent='Zeitüberschreitung beim Formulardienst. Ob die Anfrage angekommen ist, ist unklar. Bitte vor einem neuen Versuch das Postfach prüfen oder direkt Kontakt aufnehmen.';
+    } else {
+      inquiryResult.textContent='Keine Verbindung zum Formulardienst möglich (Netzwerk- oder Browserfehler). Bitte E-Mail oder Telefon nutzen. Versuchen Sie nicht mehrfach zu senden.';
+    }
   } finally {
     clearTimeout(timeout);
     inquiryButton.disabled=false;
