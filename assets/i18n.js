@@ -54,6 +54,7 @@
   document.documentElement.lang = lang;
   const style = document.createElement("style");
   style.textContent = '.tomic-languages{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center}.tomic-language{background:transparent;border:1px solid #a7a7a7;color:inherit;border-radius:3px;font:700 12px Arial,sans-serif;padding:7px 9px;min-height:34px;cursor:pointer}.tomic-language[aria-current="true"]{background:#dba92a;color:#171b1d;border-color:#dba92a}.tomic-language:focus-visible{outline:3px solid #dba92a;outline-offset:2px}.top .tomic-languages{margin-left:auto}@media(max-width:1050px){.top .tomic-languages{margin-left:auto}.top .tomic-language{font-size:11px;padding:6px}}@media(max-width:670px){.top .tomic-languages{gap:3px}.top .tomic-language{font-size:10px;padding:5px;min-height:30px}}';
+  style.textContent += '@media(max-width:670px){.top .nav{flex-wrap:wrap;padding-top:4px;padding-bottom:8px;row-gap:4px}.top .tomic-languages{order:3;flex-basis:100%;width:100%;margin:0;justify-content:flex-end}.top .menu{order:2;margin-left:auto}.top .navlinks{top:112px}.top .tomic-language{min-width:38px}}';
   document.head.appendChild(style);
   const nav = document.createElement("nav");
   nav.className = "tomic-languages";
