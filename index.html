@@ -87,5 +87,26 @@
 <button class="btn" id="inquiry-submit" type="submit">Projektanfrage absenden ↗</button>
 <p id="result" role="status" aria-live="polite"></p><p class="form-help">Nach dem Absenden öffnet sich die Bestätigungsseite des Formulardienstes FormSubmit. Dort wird angezeigt, ob Ihre Anfrage angenommen wurde.</p><p class="form-fallback">Falls das Formular nicht funktioniert: <a href="mailto:info@tomic-bau.de?subject=Projektanfrage%20TOMIC%20BAU">Projektanfrage direkt per E-Mail senden</a> oder <a href="tel:+4915730993989">anrufen</a>.</p>
 </form></div></div></section></main><footer class="footer"><div class="wrap"><span>© TOMIC BAU · Asphalt- und Kabelbau</span><span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="mailto:info@tomic-bau.de">Kontakt</a></span></div></footer><dialog class="lightbox" id="lightbox"><button aria-label="Schließen" id="close">Schließen ✕</button><img alt="" id="large"/><p id="largecap"></p></dialog><script>
-const menu=document.querySelector('.menu'),nav=document.querySelector('#navlinks');menu.addEventListener('click',()=>{let isOpen=nav.classList.toggle('show');menu.setAttribute('aria-expanded',String(isOpen));menu.setAttribute('aria-label',isOpen?'Menü schließen':'Menü öffnen')});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('show');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Menü öffnen')}));document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});document.querySelectorAll('.project').forEach(p=>p.hidden=b.dataset.filter!=='Alle'&&!p.dataset.category.split(' ').includes(b.dataset.filter))}));let dlg=document.querySelector('#lightbox');document.querySelectorAll('.open-photo').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#large').src=b.dataset.src;document.querySelector('#large').alt=b.dataset.alt;document.querySelector('#largecap').textContent=b.dataset.alt;dlg.showModal()}));document.querySelector('#close').addEventListener('click',()=>dlg.close());dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});// Native form POST deliberately used: no cross-origin fetch or client-side timeout.
+const menu=document.querySelector('.menu'),nav=document.querySelector('#navlinks');menu.addEventListener('click',()=>{let isOpen=nav.classList.toggle('show');menu.setAttribute('aria-expanded',String(isOpen));menu.setAttribute('aria-label',isOpen?'Menü schließen':'Menü öffnen')});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('show');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Menü öffnen')}));document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});document.querySelectorAll('.project').forEach(p=>p.hidden=b.dataset.filter!=='Alle'&&!p.dataset.category.split(' ').includes(b.dataset.filter))}));let dlg=document.querySelector('#lightbox');document.querySelectorAll('.open-photo').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#large').src=b.dataset.src;document.querySelector('#large').alt=b.dataset.alt;document.querySelector('#largecap').textContent=b.dataset.alt;dlg.showModal()}));document.querySelector('#close').addEventListener('click',()=>dlg.close());dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});// Native form POST: give immediate feedback when browser validation blocks submission.
+const contactForm=document.querySelector('#inquiry');
+const contactButton=document.querySelector('#inquiry-submit');
+const contactResult=document.querySelector('#result');
+contactButton.disabled=false;
+contactButton.removeAttribute('disabled');
+contactButton.addEventListener('click',()=>{
+  if (!contactForm.checkValidity()) {
+    const firstInvalid=contactForm.querySelector(':invalid');
+    const label=firstInvalid?.labels?.[0]?.textContent?.trim() || 'Pflichtfeld';
+    contactResult.style.color='#a43324';
+    contactResult.textContent='Bitte prüfen Sie Ihre Angaben. Das Feld „'+label+'“ fehlt oder ist ungültig.';
+    if(firstInvalid){firstInvalid.focus();firstInvalid.reportValidity();}
+  }
+});
+contactForm.addEventListener('input',()=>{
+  if(contactForm.checkValidity() && contactResult.textContent.startsWith('Bitte prüfen')) contactResult.textContent='';
+});
+contactForm.addEventListener('submit',()=>{
+  contactResult.style.color='#485456';
+  contactResult.textContent='Ihre Eingaben sind vollständig. Sie werden jetzt zum Formulardienst weitergeleitet.';
+});
 </script></body></html>
