@@ -119,7 +119,7 @@ contactForm.addEventListener('submit',e=>{
     'Anfrage über tomic-bau.de'
   ];
   const subject='Projektanfrage TOMIC BAU – '+value('place');
-  const href='mailto:info@tomic-bau.de?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(parts.join('\\n'));
+  const href='mailto:info@tomic-bau.de?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(parts.join('\n'));
   contactResult.style.color='#226345';
   contactResult.textContent=copy.success+' ';
   const link=document.createElement('a');
