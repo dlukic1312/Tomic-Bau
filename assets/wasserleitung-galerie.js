@@ -23,8 +23,12 @@
   };
   card.append(photo(1,true));
   const body=el('div','project-body');body.append(el('span','eyebrow',labels[0]),el('h3','',labels[1]),el('p','',labels[2]));
-  body.append(el('h4','water-photo-heading',labels[3]));
-  const thumbs=el('div','water-thumbs');[0,2,3,4].forEach(i=>thumbs.append(photo(i)));body.append(thumbs);card.append(body);
+  const details=el('details','water-details');
+  const toggleLabels={de:['Weitere Bilder ansehen (4)','Weitere Bilder ausblenden'],en:['View more photos (4)','Hide additional photos'],fr:['Voir les autres photos (4)','Masquer les autres photos'],hr:['Pogledajte još fotografija (4)','Sakrij dodatne fotografije']}[lang]||['Weitere Bilder ansehen (4)','Weitere Bilder ausblenden'];
+  const summary=el('summary','',toggleLabels[0]);details.append(summary);
+  const thumbs=el('div','water-thumbs');[0,2,3,4].forEach(i=>thumbs.append(photo(i)));details.append(thumbs);
+  details.addEventListener('toggle',()=>{summary.textContent=toggleLabels[details.open?1:0]});
+  body.append(details);card.append(body);
   const selected=document.querySelector('.filter[aria-pressed="true"]')?.dataset.filter||'Alle';
   card.hidden=selected!=='Alle'&&selected!=='Tiefbau';
   gallery.prepend(card);
